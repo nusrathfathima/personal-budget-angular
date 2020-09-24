@@ -6,6 +6,7 @@
     <title>Personal Budget</title>
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="main.css">
+    <!-- This is a Semantic HTML Change -->
     <style>
         aside {
           width: 30%;
@@ -18,6 +19,7 @@
         </style>
 </head>
 <body>
+    <a class="skip-main" href="#main">Skip to Main</a>
 
     <div class="menu">
         <ul>
@@ -32,17 +34,11 @@
         <h1>Personal Budget</h1>
         <h2>A personal-budget management app</h2>
     </div>
-    <aside>
-        <p>This is little about the aside tag which displays content in sidebar</p>
-        </aside>
-    <article>
-        <h2 style = "text-align: match-parent;">My Info</h2>
-        <p>My name is Nusrath Fathima. I am trying a semantic html tag</p>
-        </article>
+    <!-- This is a Semantic HTML Change -->
+      
+    <article class="container center">
 
-    <div class="container center">
-
-        <div class="page-area">
+        <section class="page-area">
 
             <div class="text-box">
                 <h1>Stay on track</h1>
@@ -108,19 +104,19 @@
                 </p>
             </div>
 
-        </div>
+        </section>
 
-    </div>
-    <footer>
-        <p style="text-align: center;">Author: Fabio Nolasco</p>
-        <p style="text-align: center;"><a href="mailto:fabionolasco@gmail.com">fabionolasco@gmail.com</a></p>
+    </article>
+    <!-- This is a Semantic HTML Change -->
+    <footer class="bottom">
+        <section class="center">
+            All rights reserved &copy; Fabio Nolasco
+        </section>
       </footer> 
 
-    <div class="bottom">
-        <div class="center">
-            All rights reserved &copy; Fabio Nolasco
-        </div>
-    </div>
+     
+        
+ 
 
 </body>
 </html>
