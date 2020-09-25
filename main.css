@@ -93,6 +93,17 @@ header.hero h2 {
     width: 100%;
 }
 
+.dark-mode {
+    background-color: black;
+    color: white;
+}
+
+.dark-mode-button {
+    font-size: small;
+    background-color: #4d5791;
+    color: white;
+}
+
 .page-area {
     max-width: 768px;
     display: inline-block;
@@ -114,6 +125,10 @@ header.hero h2 {
     max-width: 340px;
     text-align: justify;
     margin: 20px;
+}
+
+p {
+    font-size: small;
 }
 
 @media screen and (min-width: 768px) {
