@@ -89,11 +89,11 @@
                     What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
                 </p>
             </header>
-            <header class="text-box">
+            <header class="text-box">                
                 <h1>D3JS Chart</h1>
                 <p id="D3JSChart"></p>
             </header>
-  
+             
             <header class="text-box">
                 <h1>Chart</h1>
                 <p>
@@ -107,88 +107,16 @@
     <!-- This is a Semantic HTML Change -->
     <footer class="bottom">
         <section class="center">
-            All rights reserved &copy; Fabio Nolasco
+            All rights reserved &copy; Nusrath Fathima
         </section>
       </footer> 
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js" integrity="sha512-C2RveGuPIWqkaLAluvoxyiaN1XYNe5ss11urhZWZYBUA9Ydgj+hfGKPcxCzTwut1/fmjEZR7Ac35f2aycT8Ogw==" crossorigin="anonymous"></script>
-      <script>
-          var dataSource = {
-              datasets: [
-                  {
-                      data: [],
-                      backgroundColor: [
-                          '#ffcd56',
-                          '#ff6384',
-                          '#36a2eb',
-                          '#fd6b19',
-                          'rgba(153, 102, 255, 1)',
-                          'rgba(255, 159, 64, 1)',
-                          'rgba(75, 192, 192, 1)',
-                      ],
-                  }
-              ],
-              labels: [
-                  
-              ]
-          }; 
-
-          function createChart() {
-              var ctx = document.getElementById("myChart").getContext("2d");
-              var myPieChart = new Chart(ctx, {
-                  type: 'pie',
-                  data: dataSource
-              });
-          }
-          
-          function getBudget() {
-              axios.get('/budget')
-              .then(function (res) {
-                  console.log(res);
-                  for (var i = 0; i<res.data.myBudget.length; i++) {
-                      dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
-                      dataSource.labels[i] = res.data.myBudget[i].title;
-                  }
-                  createChart();
-              });
-          }
-          getBudget();
-
-      </script>
-
-      <style>
-
-          #D3JSChart {
-          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-          width: 960px;
-          height: 500px;
-          /* position: relative; */
-          }
-
-          svg {
-              width: 100%;
-              height: 100%;
-          }
-
-          path.slice{
-              stroke-width:2px;
-          }
-
-          polyline{
-              opacity: .3;
-              stroke: black;
-              stroke-width: 2px;
-              fill: none;
-          }
-
-      </style>
-
       <script src="https://d3js.org/d3.v3.min.js"></script>
 
       <script>
-
           var svg = d3.select("#D3JSChart")
               .append("svg")
               .append("g")
@@ -222,7 +150,7 @@
 
           var key = function(d){ return d.data.label; };
 
-          var dataSourceD3 = {
+          var dataSource = {
               datasets: [
                   {
                       data: [],
@@ -241,44 +169,51 @@
                   
               ]
           }; 
-
-          function getD3Budget() {
-                  axios.get('/budget')
-                  .then(function (res) {
-                      console.log(res);
-                      for (var i = 0; i<res.data.myBudget.length; i++) {
-                          title = res.data.myBudget[i].title
-                          dataSourceD3.datasets[0].data[title] = res.data.myBudget[i].budget;
-                          dataSourceD3.labels[i] = title;
-                      }
-                      createD3Chart(myBudgetData());
-                  });
-          }
-          getD3Budget();
-
-          function myBudgetData(){
-              color = d3.scale.ordinal()
-              .domain(dataSourceD3.labels)
-              .range(["#ffcd56", "#ff6384", "#36a2eb", "#fd6b19", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)", "rgba(75, 192, 192, 1)"]);
-
-              var labels = color.domain();
-              return labels.map(function(label){
-                  return {label: label, value: dataSourceD3.datasets[0].data[label]} // Here you can add Random.Math() to the value to get random data
+            /* Creating Pie Chart */
+          function createChart() {
+              var ctx = document.getElementById("myChart").getContext("2d");
+              var myPieChart = new Chart(ctx, {
+                  type: 'pie',
+                  data: dataSource
               });
           }
+          
+          function getBudget() {
+              axios.get('/budget')
+              .then(function (res) {
+                  console.log(res);
+                  for (var i = 0; i<res.data.myBudget.length; i++) {
+                      dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
+                      dataSource.labels[i] = res.data.myBudget[i].title;
+                  }
+                  createChart();
+                  createD3Chart(myBudgetData());   // Calling function createD3Chart();
+              });
+          }
+          getBudget();
+            /* D3JS Chart loading data */
+          function myBudgetData(){
+                color = d3.scale.ordinal()
+                .domain(dataSource.labels)
+                .range(dataSource.datasets[0].backgroundColor);
 
+                var labels = color.domain();
+                return labels.map(function(label, i){
+                    i++;
+                    return {label: label, value: dataSource.datasets[0].data[i-1]} // Here you can add 'Math.random()' to the 'value' to get random data every time you refresh the page.
+                });
+            }
+            /* Creating D3JS Chart*/
           function createD3Chart(data) {
-
-              /* ------- PIE SLICES -------*/
-              var slice = svg.select(".slices").selectAll("path.slice")
+              var d3jsSlice = svg.select(".slices").selectAll("path.slice")
                   .data(pie(data), key);
 
-              slice.enter()
+              d3jsSlice.enter()
                   .insert("path")
                   .style("fill", function(d) { return color(d.data.label); })
                   .attr("class", "slice");
 
-              slice		
+              d3jsSlice		
                   .transition().duration(1000)
                   .attrTween("d", function(d) {
                       this._current = this._current || d;
@@ -289,12 +224,10 @@
                       };
                   })
 
-              slice.exit()
+              d3jsSlice.exit()
                   .remove();
 
-              /* ------- TEXT LABELS -------*/
-
-              var text = svg.select(".labels").selectAll("text")
+                   var text = svg.select(".labels").selectAll("text")
                   .data(pie(data), key);
 
               text.enter()
@@ -304,7 +237,7 @@
                       return d.data.label;
                   });
               
-              function midAngle(d){
+              function d3jsAngle(d){
                   return d.startAngle + (d.endAngle - d.startAngle)/2;
               }
 
@@ -316,7 +249,7 @@
                       return function(t) {
                           var d2 = interpolate(t);
                           var pos = outerArc.centroid(d2);
-                          pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+                          pos[0] = radius * (d3jsAngle(d2) < Math.PI ? 1 : -1);
                           return "translate("+ pos +")";
                       };
                   })
@@ -326,22 +259,22 @@
                       this._current = interpolate(0);
                       return function(t) {
                           var d2 = interpolate(t);
-                          return midAngle(d2) < Math.PI ? "start":"end";
+                          return d3jsAngle(d2) < Math.PI ? "start":"end";
                       };
                   });
 
               text.exit()
                   .remove();
 
-              /* ------- SLICE TO TEXT POLYLINES -------*/
+              
 
-              var polyline = svg.select(".lines").selectAll("polyline")
+              var line = svg.select(".lines").selectAll("polyline")
                   .data(pie(data), key);
               
-              polyline.enter()
+              line.enter()
                   .append("polyline");
 
-              polyline.transition().duration(1000)
+              line.transition().duration(1000)
                   .attrTween("points", function(d){
                       this._current = this._current || d;
                       var interpolate = d3.interpolate(this._current, d);
@@ -349,12 +282,12 @@
                       return function(t) {
                           var d2 = interpolate(t);
                           var pos = outerArc.centroid(d2);
-                          pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+                          pos[0] = radius * 0.95 * (d3jsAngle(d2) < Math.PI ? 1 : -1);
                           return [arc.centroid(d2), outerArc.centroid(d2), pos];
                       };			
                   });
               
-              polyline.exit()
+              line.exit()
                   .remove();
           };
 
