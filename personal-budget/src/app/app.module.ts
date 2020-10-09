@@ -14,7 +14,8 @@ import { LoginComponent } from './login/login.component';
 import { P404Component } from './p404/p404.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { ContactComponent } from './contact/contact.component';
-import { D3jschartComponent } from './d3jschart/d3jschart.component';
+import { D3JSChartComponent } from './d3-jschart/d3-jschart.component';
+import { DataService } from './data.service';
 
 @NgModule({
   declarations: [
@@ -29,14 +30,14 @@ import { D3jschartComponent } from './d3jschart/d3jschart.component';
     P404Component,
     BreadcrumbsComponent,
     ContactComponent,
-    D3jschartComponent
+    D3JSChartComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
