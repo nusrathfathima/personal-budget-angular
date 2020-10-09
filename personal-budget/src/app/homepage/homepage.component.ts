@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js';
 
+
 @Component({
   selector: 'pb-homepage',
   templateUrl: './homepage.component.html',
@@ -41,7 +42,7 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  createChart() {
+  createChart(): void {
     var ctx = document.getElementById('myChart');
     var myPieChart = new Chart(ctx, {
         type: 'pie',
