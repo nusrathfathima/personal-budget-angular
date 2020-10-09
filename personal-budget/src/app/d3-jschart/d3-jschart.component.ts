@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
 import { DataService } from '../data.service';
 
@@ -10,8 +9,6 @@ import { DataService } from '../data.service';
 })
 
 export class D3JSChartComponent implements OnInit {
-
-  private data = [];
 
   private svg;
   private margin = 50;
@@ -31,41 +28,35 @@ export class D3JSChartComponent implements OnInit {
       'transform',
       'translate(' + this.width / 2 + ',' + this.height / 2 + ')'
     );
-    const labelsArray = this.dataService.dataSource.labels;
-    const dataArray = this.dataService.dataSource.datasets[0].data;
-
-    console.log(labelsArray);
-    console.log(dataArray);
-
-    for (let j = 0; j < labelsArray.length; j++) {
-      this.data.push({
-        title: labelsArray[j],
-        budget: dataArray[j]
-      });
-    }
-    console.log(this.data);
   }
 
-  private createColors(): void {
+  private createColors(data): void {
     this.colors = d3.scaleOrdinal()
-    // .domain(this.data_old.map(d => d.Stars.toString()))
-    .domain(this.data.map(d => d.budget.toString()))
-    .range(this.dataService.dataSource.datasets[0].backgroundColor);
-    // .range(['#c7d3ec', '#a5b8db', '#879cc4', '#677795', '#5a6782']);
+    .domain(data.myBudget.map(d => d.budget.toString()))
+    .range([
+      '#ffcd56',
+      '#ff6384',
+      '#36a2eb',
+      '#fd6b19',
+      'rgba(153, 102, 255, 1)',
+      'rgba(255, 159, 64, 1)',
+      'rgba(75, 192, 192, 1)',
+      ]
+    );
   }
 
-  private drawChart(): void {
+  private drawChart(data): void {
     // Compute the position of each group on the pie:
     const pie = d3.pie<any>().value((d: any) => Number(d.budget));
 
     // Build the pie chart
     this.svg
     .selectAll('pieces')
-    .data(pie(this.data))
+    .data(pie(data.myBudget))
     .enter()
     .append('path')
     .attr('d', d3.arc()
-      .innerRadius(0)
+      .innerRadius(this.radius / 3)
       .outerRadius(this.radius)
     )
     .attr('fill', (d, i) => (this.colors(i)))
@@ -79,7 +70,7 @@ export class D3JSChartComponent implements OnInit {
 
     this.svg
     .selectAll('pieces')
-    .data(pie(this.data))
+    .data(pie(data.myBudget))
     .enter()
     .append('text')
     .text(d => d.data.title)
@@ -91,9 +82,10 @@ export class D3JSChartComponent implements OnInit {
   constructor(public dataService: DataService) { }
 
   ngOnInit(): void {
-    console.log(this.dataService.dataSource);
-    this.createSvg();
-    this.createColors();
-    this.drawChart();
+    this.dataService.getMyBudget().subscribe((data: any) => {
+      this.createSvg();
+      this.createColors(data);
+      this.drawChart(data);
+      });
   }
 }

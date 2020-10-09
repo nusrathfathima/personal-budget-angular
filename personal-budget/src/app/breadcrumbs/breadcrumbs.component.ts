@@ -12,4 +12,9 @@ export class BreadcrumbsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onClickMe() {
+    const element = document.body;
+    element.classList.toggle('dark-mode');
+ }
+
 }
